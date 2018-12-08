@@ -2,7 +2,7 @@ resource "aws_security_group" "bastion" {
   name        = "bastion-group"
   description = "Bastion: SSH"
 
-  vpc_id = "${var.vpc-id}"
+  vpc_id = "${data.aws_vpc.bastion.id}"
 
   ingress {
     from_port   = "22"

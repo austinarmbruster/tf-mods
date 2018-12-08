@@ -1,9 +1,9 @@
 resource "aws_subnet" "bastion" {
-  vpc_id = "${var.vpc-id}"
+  vpc_id = "${data.aws_vpc.bastion.id}"
 
   count = "${length(var.azs)}"
 
-  cidr_block = "${element(var.subnet-cidrs, count.index)}"
+  cidr_block = "${cidrsubnet(data.aws_vpc.bastion.cidr_block, 2, count.index)}"
 
   map_public_ip_on_launch = true
 
