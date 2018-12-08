@@ -1,7 +1,7 @@
 resource "aws_elb" "bastion-elb" {
   name            = "bastion-elb"
   security_groups = ["${aws_security_group.bastion.id}"]
-  subnets         = ["${aws_subnet.bastion-a.id}", "${aws_subnet.bastion-b.id}"]
+  subnets         = ["${aws_subnet.bastion.*.id}"]
 
   listener {
     instance_port     = 22

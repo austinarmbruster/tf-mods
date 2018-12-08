@@ -14,38 +14,19 @@ resource "aws_launch_configuration" "bastion" {
   }
 }
 
-resource "aws_autoscaling_group" "bastion-a" {
-  name                 = "bastion-a"
+resource "aws_autoscaling_group" "bastion" {
+  count = "${length(var.azs)}"
+
+  name                 = "bastion-${count.index}"
   launch_configuration = "${aws_launch_configuration.bastion.name}"
   min_size             = 1
   max_size             = 2
 
-  vpc_zone_identifier = ["${aws_subnet.bastion-a.id}"]
+  vpc_zone_identifier = ["${element(aws_subnet.bastion.*.id, count.index)}"]
 
   load_balancers = ["${aws_elb.bastion-elb.id}"]
 
   lifecycle {
     create_before_destroy = true
-  }
-}
-
-resource "aws_autoscaling_group" "bastion-b" {
-  name                 = "bastion-b"
-  launch_configuration = "${aws_launch_configuration.bastion.name}"
-  min_size             = 1
-  max_size             = 2
-
-  load_balancers = ["${aws_elb.bastion-elb.id}"]
-
-  vpc_zone_identifier = ["${aws_subnet.bastion-b.id}"]
-
-  lifecycle {
-    create_before_destroy = true
-  }
-
-  tag {
-    key                 = "type"
-    value               = "bastion"
-    propagate_at_launch = true
   }
 }
