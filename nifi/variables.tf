@@ -11,3 +11,8 @@ variable "azs" {
   type        = "list"
   default     = ["us-east-1a", "us-east-1b"]
 }
+
+variable "nifi-url" {
+  description = "The URL from which NiFi will be retrieved"
+  default     = "http://apache.mirrors.pair.com/nifi/1.8.0/nifi-1.8.0-bin.tar.gz"
+}

@@ -3,7 +3,8 @@ resource "aws_launch_configuration" "nifi" {
 
   image_id = "${data.aws_ami.centos7.id}"
 
-  user_data = "${file("nifi-setup.yaml")}"
+  #user_data = "${file("nifi-setup.yaml")}"
+  user_data = "${data.template_file.nifi-setup.rendered}"
 
   instance_type = "t2.micro"
 
