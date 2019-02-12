@@ -9,7 +9,7 @@ resource "aws_launch_configuration" "reverse-proxy" {
   iam_instance_profile = "${aws_iam_instance_profile.reverse-proxy.name}"
   security_groups      = ["${aws_security_group.reverse-proxy.id}"]
 
-  user_data = "${file("reverse-proxy.yaml")}"
+  user_data = "${file("${path.module}/reverse-proxy.yaml")}"
 
   lifecycle {
     create_before_destroy = true
