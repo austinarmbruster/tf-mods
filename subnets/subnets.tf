@@ -9,7 +9,8 @@ resource "aws_subnet" "common-subnets-public" {
 
   availability_zone = "${element(var.azs, count.index)}"
 
-  tags = "${merge(var.tags, map("${var.app-name}", true, "public", true, "Name", "${var.app-name}-common-subnets-public-${count.index}"))}"
+  tags = "${merge(var.tags,
+    map("${var.app-name}", true, "public", true, "Name", "${var.app-name}-public-${count.index}", "version", "${var.version}"))}"
 }
 
 resource "aws_subnet" "common-subnets" {
@@ -22,5 +23,6 @@ resource "aws_subnet" "common-subnets" {
 
   availability_zone = "${element(var.azs, count.index)}"
 
-  tags = "${merge(var.tags, map("${var.app-name}", true, "private", true, "Name", "${var.app-name}-common-subnets-${count.index}"))}"
+  tags = "${merge(var.tags,
+    map("${var.app-name}", true, "private", true, "Name", "${var.app-name}-${count.index}", "version", "${var.version}"))}"
 }

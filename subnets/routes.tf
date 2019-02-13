@@ -7,10 +7,8 @@ resource "aws_route_table" "to-world" {
     gateway_id = "${element(aws_nat_gateway.to-world.*.id, count.index)}"
   }
 
-  tags {
-    Name    = "${var.app-name}-to-world-${count.index}"
-    version = "${var.version}"
-  }
+  tags = "${merge(var.tags,
+    map("${var.app-name}", true, "Name", "${var.app-name}-to-world", "version", "${var.version}"))}"
 }
 
 resource "aws_route_table_association" "common-subnets" {
@@ -27,10 +25,8 @@ resource "aws_route_table" "from-world" {
     gateway_id = "${data.aws_internet_gateway.from-world.id}"
   }
 
-  tags {
-    Name    = "${var.app-name}-from-world"
-    version = "${var.version}"
-  }
+  tags = "${merge(var.tags,
+    map("${var.app-name}", true, "Name", "${var.app-name}-from-world", "version", "${var.version}"))}"
 }
 
 resource "aws_route_table_association" "common-subnets-public" {
