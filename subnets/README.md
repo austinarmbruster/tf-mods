@@ -4,6 +4,12 @@ The subnet module allows a user to create public and private subnets that are ap
 
 In the end, one publicly available (internet gateway routed) subnet will be created for each availability zone specified within the VPC's CIDR block.  One privately available subnet will also be created along with a NAT gateway that allows the private subnet to reach the Internet.
 
+## Dependencies
+
+This module expects that a VPC and an Internet Gateway attached to that VPC
+already exists.  The VPC is discovered by a tag.  The attached Internet Gateway
+is acquired from the VPC configuration.
+
 ## Inputs
 
 The only required variable is the VPC Tag. The remainder of the inputs are used to shape the creation of the subnets.
