@@ -14,6 +14,16 @@ variable "version" {
   default     = "unknown"
 }
 
+variable "public-subnet-ids" {
+  type    = "list"
+  default = []
+}
+
+variable "subnet-ids" {
+  type    = "list"
+  default = []
+}
+
 variable "reverse-proxy-service-port" {
   description = "Port on the reverse proxy instance that is used for service requests"
   type        = "string"
