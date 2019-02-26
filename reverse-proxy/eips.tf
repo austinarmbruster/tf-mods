@@ -1,4 +1,7 @@
 resource "aws_eip" "reverse-proxy" {
-  count = "${length(data.aws_subnet.reverse-proxy-public.*.id)}"
-  vpc   = true
+  count = "${length(var.public-subnet-ids)}"
+
+  vpc  = true
+  tags = "${merge(var.tags,
+    map("${var.app-name}", true, "Name", "${var.app-name}-reverse-proxy-${count.index}", "version", "${var.version}"))}"
 }

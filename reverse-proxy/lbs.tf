@@ -6,9 +6,14 @@
  * IP address for a DNS entry.  By using a single load balancer, the traffic
  * will still be routed to all AZs when Java is using a single IP. 
  */
+locals {
+  instantiate-1 = "${replace(replace(length(var.public-subnet-ids), "/^[^1].*/", "0"), "/^1$/", "1")}"
+  instantiate-2 = "${replace(replace(length(var.public-subnet-ids), "/^[^2].*/", "0"), "/^2$/", "1")}"
+  instantiate-3 = "${replace(replace(length(var.public-subnet-ids), "/^[^3].*/", "0"), "/^3$/", "1")}"
+}
+
 resource "aws_lb" "reverse-proxy-1" {
-  count = "${replace(replace(length(data.aws_subnet.reverse-proxy-public.*.id), "/^[^1].*/", "0"), 
-             "/^1$/", "1")}"
+  count = "${local.instantiate-1}"
 
   name               = "${var.app-name}-reverse-proxy"
   internal           = false
@@ -26,8 +31,7 @@ resource "aws_lb" "reverse-proxy-1" {
 }
 
 resource "aws_lb" "reverse-proxy-2" {
-  count = "${replace(replace(length(data.aws_subnet.reverse-proxy-public.*.id), "/^[^2].*/", "0"), 
-             "/^2$/", "1")}"
+  count = "${local.instantiate-2}"
 
   name               = "${var.app-name}-reverse-proxy"
   internal           = false
@@ -50,8 +54,7 @@ resource "aws_lb" "reverse-proxy-2" {
 }
 
 resource "aws_lb" "reverse-proxy-3" {
-  count = "${replace(replace(length(data.aws_subnet.reverse-proxy-public.*.id), "/^[^3].*/", "0"), 
-             "/^3$/", "1")}"
+  count = "${local.instantiate-3}"
 
   name               = "${var.app-name}-reverse-proxy"
   internal           = false
@@ -99,6 +102,7 @@ resource "aws_lb_target_group" "reverse-proxy" {
 }
 
 resource "aws_lb_listener" "reverse-proxy" {
+  // Choose the load balancer that is actually instantiated.
   load_balancer_arn = "${element(concat(aws_lb.reverse-proxy-1.*.arn, aws_lb.reverse-proxy-2.*.arn, aws_lb.reverse-proxy-3.*.arn),0)}"
 
   port     = "80"

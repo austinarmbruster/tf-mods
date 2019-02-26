@@ -8,10 +8,18 @@ resource "aws_launch_configuration" "reverse-proxy" {
   iam_instance_profile = "${aws_iam_instance_profile.reverse-proxy.name}"
   security_groups      = ["${aws_security_group.reverse-proxy.id}"]
 
-  user_data = "${file("${path.module}/reverse-proxy.yaml")}"
+  user_data = "${data.template_file.reverse-proxy-cloud-init.rendered}"
 
   lifecycle {
     create_before_destroy = true
+  }
+}
+
+data "template_file" "reverse-proxy-cloud-init" {
+  template = "${file("${path.module}/reverse-proxy.yaml")}"
+
+  vars {
+    endpoint = "${var.endpoint}"
   }
 }
 

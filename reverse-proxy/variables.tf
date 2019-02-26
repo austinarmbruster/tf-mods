@@ -1,5 +1,21 @@
 variable "vpc-tag" {
   description = "The boolean tag name of the VPC in which the reverse proxy should reside."
+  type        = "string"
+}
+
+variable "endpoint" {
+  description = "The URL where the reverse proxy should point"
+  type        = "string"
+}
+
+variable "public-subnet-ids" {
+  description = "List of subnet IDs in which the load balancers for the reverse proxy will be placed."
+  type        = "list"
+}
+
+variable "subnet-ids" {
+  description = "List of subnet IDs in which the reverse proxy will run."
+  type        = "list"
 }
 
 variable "app-name" {
@@ -14,14 +30,10 @@ variable "version" {
   default     = "unknown"
 }
 
-variable "public-subnet-ids" {
-  type    = "list"
-  default = []
-}
-
-variable "subnet-ids" {
-  type    = "list"
-  default = []
+variable "tags" {
+  description = "The mapping of tag names and values to add to reverse proxy compontents."
+  type        = "map"
+  default     = {}
 }
 
 variable "reverse-proxy-service-port" {
