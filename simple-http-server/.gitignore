@@ -1,0 +1,7 @@
+/.terraform/
+/provider.tf
+/terraform.tfstate
+/terraform.tfstate.backup
+/tf-app-rsa
+/tf-app-rsa.pub
+
