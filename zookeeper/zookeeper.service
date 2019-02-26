@@ -1,0 +1,10 @@
+[Unit]
+Description=miner
+
+[Service]
+ExecStart=/path/to/miner
+ExecStop=
+ExecReload=
+
+[Install]
+WantedBy=multi-user.target
